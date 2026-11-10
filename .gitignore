@@ -1,0 +1,16 @@
+.DS_Store
+
+# Foundry build artifacts
+packages/foundry/cache/
+packages/foundry/out/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Editor files
+.idea/
+.vscode/
+*.swp
+
