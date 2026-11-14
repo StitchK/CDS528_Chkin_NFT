@@ -1,5 +1,8 @@
 .DS_Store
 
+# Project snapshots belong outside this repository
+/chkin_nft*.zip
+
 # Foundry build artifacts
 packages/foundry/cache/
 packages/foundry/out/
