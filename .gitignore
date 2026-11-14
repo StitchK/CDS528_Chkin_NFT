@@ -3,6 +3,7 @@
 # Foundry build artifacts
 packages/foundry/cache/
 packages/foundry/out/
+packages/foundry/broadcast/
 
 # Local environment files
 .env
