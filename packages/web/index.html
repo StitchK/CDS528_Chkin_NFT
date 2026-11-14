@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="CheckIn 链上打卡挑战 DApp" />
+    <meta name="theme-color" content="#f5f2ea" />
+    <title>CheckIn · 链上打卡挑战</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2317201d'/%3E%3Cpath d='M16 34l11 10 22-25' fill='none' stroke='%23c8ff4d' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="CheckIn 首页">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 36 36" role="img">
+            <path d="M8 19.2 14.2 25 28 10.8" />
+          </svg>
+        </span>
+        <span>CheckIn</span>
+      </a>
+
+      <nav class="topnav" aria-label="主导航">
+        <button class="nav-link active" type="button" data-view="explore">发现</button>
+        <button class="nav-link" type="button" data-view="mine">我的挑战</button>
+        <button class="nav-link" type="button" data-view="create">发起挑战</button>
+        <button class="nav-link" type="button" data-view="rewards">奖励中心</button>
+      </nav>
+
+      <div class="top-actions">
+        <button class="icon-button" id="settingsButton" type="button" aria-label="合约设置" title="合约设置">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 15.4a3.4 3.4 0 1 0 0-6.8 3.4 3.4 0 0 0 0 6.8Z" />
+            <path d="m19.4 15 .1.1 1.3 2.1-2.7 2.7-2.1-1.3-.2-.1a8 8 0 0 1-1.9.8l-.1.2-.6 2.4H9.5L9 18.3l-.1-.2a8 8 0 0 1-1.9-.8l-.2.1-2.1 1.3L2 16l1.3-2.1.1-.2a8 8 0 0 1-.8-1.9l-.2-.1L0 11.2V7.5L2.4 7l.2-.1A8 8 0 0 1 3.4 5l-.1-.2L2 2.7 4.7 0l2.1 1.3.2.1A8 8 0 0 1 9 0.6l.1-.2.5-2.4h3.8l.5 2.4.1.2a8 8 0 0 1 1.9.8l.2-.1L18.2 0l2.7 2.7-1.3 2.1-.1.2a8 8 0 0 1 .8 1.9l.2.1 2.4.5v3.8l-2.4.5-.2.1a8 8 0 0 1-.9 3.1Z" transform="translate(.5 2) scale(.96)" />
+          </svg>
+        </button>
+        <button class="wallet-button" id="walletButton" type="button">
+          <span class="status-dot"></span>
+          <span id="walletButtonText">连接钱包</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span></span> ON-CHAIN ACCOUNTABILITY</div>
+          <h1>坚持，<br /><em>应该被看见。</em></h1>
+          <p>
+            设定目标，锁定承诺。完成每日打卡，取回押金、分享奖励，
+            并铸造一枚永久记录坚持的 NFT。
+          </p>
+          <div class="hero-actions">
+            <button class="primary-button" id="heroCreateButton" type="button">
+              发起一个挑战
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
+            </button>
+            <button class="text-button" id="howItWorksButton" type="button">
+              了解运作方式 <span>↘</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="协议运作概览">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="hero-card hero-card-main">
+            <span class="card-kicker">今日承诺</span>
+            <div class="ring-progress">
+              <svg viewBox="0 0 124 124" aria-hidden="true">
+                <circle class="ring-track" cx="62" cy="62" r="52" />
+                <circle class="ring-value" cx="62" cy="62" r="52" />
+              </svg>
+              <div><strong>07</strong><span>连续天数</span></div>
+            </div>
+            <div class="card-bottom-row">
+              <span><i class="live-dot"></i> 链上已验证</span>
+              <span>7 / 21 天</span>
+            </div>
+          </div>
+          <div class="float-chip chip-reward">
+            <span class="chip-icon">✦</span>
+            <div><small>成功奖励</small><strong>+ CHECK</strong></div>
+          </div>
+          <div class="float-chip chip-nft">
+            <span class="chip-icon dark">◇</span>
+            <div><small>完成凭证</small><strong>REWARD NFT</strong></div>
+          </div>
+          <div class="hero-stamp" aria-hidden="true">KEEP<br />GOING</div>
+        </div>
+      </section>
+
+      <section class="protocol-strip" aria-label="协议数据">
+        <div class="metric"><span>链上挑战</span><strong id="challengeMetric">—</strong></div>
+        <div class="metric"><span>我的 CHECK</span><strong id="balanceMetric">—</strong></div>
+        <div class="metric"><span>奖励 NFT</span><strong id="nftMetric">—</strong></div>
+        <div class="metric metric-status">
+          <span>网络状态</span>
+          <strong><i id="networkStatusDot"></i><span id="networkMetric">未连接</span></strong>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="sidebar">
+          <p class="sidebar-label">工作台</p>
+          <button class="side-link active" type="button" data-view="explore">
+            <span class="side-icon">⌁</span> 发现挑战 <span class="side-count" id="challengeCountBadge">0</span>
+          </button>
+          <button class="side-link" type="button" data-view="mine">
+            <span class="side-icon">◌</span> 我的挑战
+          </button>
+          <button class="side-link" type="button" data-view="create">
+            <span class="side-icon">＋</span> 发起挑战
+          </button>
+          <button class="side-link" type="button" data-view="rewards">
+            <span class="side-icon">✦</span> 奖励中心
+          </button>
+
+          <div class="wallet-card">
+            <div class="wallet-card-head">
+              <span>我的钱包</span><i id="walletCardDot"></i>
+            </div>
+            <strong id="walletCardBalance">— CHECK</strong>
+            <span id="walletCardAddress">尚未连接</span>
+            <button id="claimTestTokenButton" type="button">领取测试代币</button>
+          </div>
+        </aside>
+
+        <div class="content">
+          <div class="setup-notice" id="setupNotice" hidden>
+            <div>
+              <span class="notice-icon">!</span>
+              <p><strong>还差一步</strong><br />配置部署后的 ChallengeManager 地址即可读取链上数据。</p>
+            </div>
+            <button id="setupNoticeButton" type="button">立即配置</button>
+          </div>
+
+          <section class="view active" id="exploreView">
+            <div class="section-heading">
+              <div>
+                <span class="section-index">01</span>
+                <div><h2>发现挑战</h2><p>选择一个值得坚持的目标，并为它许下承诺。</p></div>
+              </div>
+              <div class="heading-tools">
+                <label class="search-box">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" /><path d="m13 13 4 4" /></svg>
+                  <input id="challengeSearch" type="search" placeholder="搜索编号或创建者" />
+                </label>
+                <button class="square-button" id="refreshButton" type="button" title="刷新">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 7A7 7 0 1 0 17 12" /><path d="M16.5 3v4h-4" /></svg>
+                </button>
+              </div>
+            </div>
+            <div class="filter-row" role="group" aria-label="挑战筛选">
+              <button class="filter active" type="button" data-filter="all">全部</button>
+              <button class="filter" type="button" data-filter="recruiting">招募中</button>
+              <button class="filter" type="button" data-filter="active">进行中</button>
+              <button class="filter" type="button" data-filter="settled">已结束</button>
+            </div>
+            <div class="challenge-grid" id="challengeGrid"></div>
+            <div class="empty-state" id="challengeEmpty">
+              <span class="empty-orbit">◎</span>
+              <h3>链上还没有挑战</h3>
+              <p>连接钱包并配置合约，或成为第一个发起挑战的人。</p>
+              <button class="primary-button small" type="button" data-view="create">发起挑战</button>
+            </div>
+          </section>
+
+          <section class="view" id="mineView">
+            <div class="section-heading">
+              <div>
+                <span class="section-index">02</span>
+                <div><h2>我的挑战</h2><p>查看已加入和创建的挑战，完成今天的链上打卡。</p></div>
+              </div>
+              <button class="outline-button" id="refreshMineButton" type="button">刷新状态</button>
+            </div>
+            <div class="challenge-grid" id="mineGrid"></div>
+            <div class="empty-state" id="mineEmpty">
+              <span class="empty-orbit">◌</span>
+              <h3>还没有参与记录</h3>
+              <p>加入一个公开挑战，你的进度会出现在这里。</p>
+              <button class="outline-button" type="button" data-view="explore">去发现挑战</button>
+            </div>
+          </section>
+
+          <section class="view" id="createView">
+            <div class="section-heading compact">
+              <div>
+                <span class="section-index">03</span>
+                <div><h2>发起挑战</h2><p>清晰的目标，加上一点真实的承诺。</p></div>
+              </div>
+            </div>
+            <form class="create-layout" id="createChallengeForm">
+              <div class="form-panel">
+                <div class="field full">
+                  <label for="metadataURI">挑战元数据 URI</label>
+                  <input id="metadataURI" name="metadataURI" required placeholder="ipfs://... 或 https://.../metadata.json" />
+                  <small>该 URI 同时用于成功者的奖励 NFT。</small>
+                </div>
+                <div class="field">
+                  <label for="depositAmount">每人押金</label>
+                  <div class="input-suffix"><input id="depositAmount" name="depositAmount" type="number" min="0" step="any" required placeholder="100" /><span>CHECK</span></div>
+                </div>
+                <div class="field">
+                  <label for="startTime">开始时间</label>
+                  <input id="startTime" name="startTime" type="datetime-local" required />
+                </div>
+                <div class="field">
+                  <label for="durationDays">持续天数</label>
+                  <input id="durationDays" name="durationDays" type="number" min="1" max="365" required value="21" />
+                </div>
+                <div class="field">
+                  <label for="requiredCheckIns">需打卡天数</label>
+                  <input id="requiredCheckIns" name="requiredCheckIns" type="number" min="1" max="365" required value="18" />
+                </div>
+                <div class="field full">
+                  <label for="maxParticipants">参与人数上限</label>
+                  <div class="range-row">
+                    <input id="maxParticipants" name="maxParticipants" type="range" min="1" max="50" value="20" />
+                    <output id="maxParticipantsOutput">20 人</output>
+                  </div>
+                </div>
+                <div class="form-note"><span>i</span><p>挑战开始前，创建者可以取消挑战；所有已报名用户随后可自行取回押金。</p></div>
+                <button class="primary-button submit-button" type="submit">发布到链上 <span>→</span></button>
+              </div>
+              <aside class="preview-card">
+                <span class="card-kicker">挑战预览</span>
+                <div class="preview-art"><span>21</span><small>DAY<br />CHALLENGE</small></div>
+                <h3 id="previewTitle">你的下一个承诺</h3>
+                <p>完成目标，退回押金；坚持者还将分享失败押金奖励。</p>
+                <dl>
+                  <div><dt>押金</dt><dd id="previewDeposit">— CHECK</dd></div>
+                  <div><dt>目标</dt><dd id="previewDays">18 / 21 天</dd></div>
+                  <div><dt>人数</dt><dd id="previewPeople">最多 20 人</dd></div>
+                </dl>
+              </aside>
+            </form>
+          </section>
+
+          <section class="view" id="rewardsView">
+            <div class="section-heading">
+              <div>
+                <span class="section-index">04</span>
+                <div><h2>奖励中心</h2><p>领取作者收益、成功者奖励，以及你的完成凭证。</p></div>
+              </div>
+              <button class="outline-button" id="refreshRewardsButton" type="button">检查新奖励</button>
+            </div>
+            <div class="reward-summary">
+              <div class="reward-total">
+                <span>可领取奖励</span><strong id="claimableReward">—</strong><small>CHECK</small>
+              </div>
+              <div class="reward-copy"><span>奖励来自未完成者的承诺押金</span><p>协议不自动发放奖励，由符合资格的钱包主动领取。</p></div>
+            </div>
+            <div class="reward-list" id="rewardList"></div>
+            <div class="empty-state" id="rewardEmpty">
+              <span class="empty-orbit">✦</span>
+              <h3>暂无可领取奖励</h3>
+              <p>完成挑战或创建一个有人参与的挑战后，奖励会显示在这里。</p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="how-it-works" id="howItWorks">
+        <div class="eyebrow light"><span></span> HOW IT WORKS</div>
+        <div class="how-heading"><h2>把目标变成<br />一份链上契约。</h2><p>没有中心化裁判，规则由智能合约公开执行。</p></div>
+        <div class="steps">
+          <article><span>01</span><div class="step-icon">↗</div><h3>锁定承诺</h3><p>选择挑战并存入 CHECK。押金让每一次开始都更认真。</p></article>
+          <article><span>02</span><div class="step-icon">✓</div><h3>每日打卡</h3><p>挑战期间每天发送一次链上打卡，留下不可篡改的记录。</p></article>
+          <article><span>03</span><div class="step-icon">✦</div><h3>分享成果</h3><p>完成者取回押金、分享额外奖励，并铸造专属完成 NFT。</p></article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand footer-brand" href="#"><span class="brand-mark"><svg viewBox="0 0 36 36"><path d="M8 19.2 14.2 25 28 10.8" /></svg></span><span>CheckIn</span></a>
+      <p>用公开代码，兑现每一个认真许下的承诺。</p>
+      <span>BUILT ON EVM · 2026</span>
+    </footer>
+
+    <dialog class="modal" id="settingsModal">
+      <form method="dialog" class="modal-card" id="settingsForm">
+        <div class="modal-head">
+          <div><span class="modal-kicker">CONTRACT SETUP</span><h2>连接你的合约</h2></div>
+          <button class="close-button" value="cancel" aria-label="关闭" type="submit">×</button>
+        </div>
+        <p class="modal-intro">只需填写 ChallengeManager，页面会自动读取其余三个合约地址。配置仅保存在当前浏览器。</p>
+        <div class="field full">
+          <label for="managerAddress">ChallengeManager 地址</label>
+          <input id="managerAddress" name="managerAddress" autocomplete="off" placeholder="0x..." />
+        </div>
+        <div class="auto-addresses" id="autoAddresses">
+          <div><span>RewardPool</span><code id="rewardPoolAddress">等待读取</code></div>
+          <div><span>CHECK Token</span><code id="tokenAddress">等待读取</code></div>
+          <div><span>CheckIn NFT</span><code id="nftAddress">等待读取</code></div>
+        </div>
+        <div class="modal-actions">
+          <button class="text-button danger" id="clearConfigButton" type="button">清除配置</button>
+          <button class="outline-button" id="detectContractsButton" type="button">检测合约</button>
+          <button class="primary-button small" id="saveConfigButton" type="button">保存并加载</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="modal detail-modal" id="detailModal">
+      <div class="modal-card detail-card">
+        <div class="modal-head">
+          <div><span class="modal-kicker" id="detailKicker">CHALLENGE #—</span><h2 id="detailTitle">挑战详情</h2></div>
+          <button class="close-button" id="closeDetailButton" aria-label="关闭" type="button">×</button>
+        </div>
+        <div id="detailContent"></div>
+      </div>
+    </dialog>
+
+    <div class="transaction-overlay" id="transactionOverlay" hidden>
+      <div class="transaction-box">
+        <span class="spinner"></span>
+        <strong id="transactionTitle">等待钱包确认</strong>
+        <p id="transactionMessage">请在钱包中检查并确认交易。</p>
+      </div>
+    </div>
+
+    <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
