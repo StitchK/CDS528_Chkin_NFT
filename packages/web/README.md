@@ -1,45 +1,47 @@
 # CheckIn Web
 
-无需构建工具的 CheckIn 智能合约前端，使用原生 HTML、CSS、JavaScript 与 ethers v6。
+A frontend for the CheckIn smart contracts, built with native HTML, CSS, JavaScript and ethers v6. No build tools are required.
 
-## 本地启动
+## Run locally
 
-请通过 HTTP 服务访问，不要直接双击 `index.html`：
+Serve the files over HTTP instead of opening `index.html` directly:
 
 ```bash
 cd packages/web
 python3 -m http.server 4173
 ```
 
-然后打开 `http://localhost:4173`。
+Open <http://localhost:4173>.
 
-## 首次配置
+## Initial configuration
 
-1. 在钱包中切换到合约部署所在网络。
-2. 点击右上角设置按钮。
-3. 输入已部署的 `ChallengeManager` 地址。
-4. 点击“检测合约”；页面会自动读取并验证 `RewardPool`、`MockDepositToken` 和 `CheckInNFT`。
-5. 保存配置。配置按 chain ID 保存在浏览器 `localStorage` 中。
+1. Switch the wallet to the network where the contracts are deployed.
+2. Open settings using the button in the upper-right corner.
+3. Enter the deployed `ChallengeManager` address.
+4. Use the contract detection button. The frontend discovers the linked `RewardPool`, `MockDepositToken` and `CheckInNFT` addresses, checks that contract code exists and checks the pool's manager/token bindings. Confirm the NFT manager binding separately during deployment.
+5. Save the configuration. It is stored by chain ID in browser `localStorage`.
 
-## 已实现功能
+## Implemented features
 
-- 钱包连接、网络和 CHECK/NFT 余额展示
-- 浏览、搜索和筛选链上挑战
-- 创建、取消、报名挑战
-- 自动检查并发起 ERC-20 押金授权
-- 每日打卡、到期公开结算
-- 领取成功押金和奖励 NFT
-- 领取取消退款
-- 作者收益和成功者额外奖励领取
-- 测试 CHECK 代币领取
-- IPFS/HTTPS 元数据名称和描述读取
+- Wallet connection, network information and CHECK/NFT balances
+- Browsing, searching and filtering on-chain challenges
+- Creating, cancelling and joining challenges
+- Automatic ERC-20 deposit allowance checks and approval requests
+- Daily check-ins and permissionless finalization after expiry
+- Successful participant deposit and reward NFT claims
+- Cancellation refunds
+- Author allocation and winner bonus claims
+- Test CHECK faucet claims
+- Challenge names and descriptions from IPFS/HTTPS metadata
 
-## 部署
+## Hosting
 
-目录内全是静态文件，可直接部署到 GitHub Pages、Cloudflare Pages、Netlify、Vercel 或任意静态服务器。线上页面需要能够访问 `https://cdn.jsdelivr.net` 以加载 ethers v6。
+All files in this directory are static. Deploy `packages/web` as the site root to GitHub Pages, Cloudflare Pages, Netlify, Vercel or another static server. The hosted page must be able to access `https://cdn.jsdelivr.net` to load ethers v6.
 
-## 注意事项
+## Notes
 
-- 当前测试代币开放 `claim()`，只应在本地或测试网使用。
-- 浏览器需要安装 MetaMask 或其他支持 EIP-1193 的 EVM 钱包。
-- 合约中的“一天”从挑战开始时间起按连续 24 小时计算，不是本地自然日。
+- The test token exposes a public, repeatable `claim()` faucet. Use it only locally or on test networks.
+- Install MetaMask or another EIP-1193-compatible EVM browser wallet.
+- A challenge day is a consecutive 24-hour period measured from the challenge start, not a local calendar day.
+- The current interface displays Chinese labels. This English README describes those controls; it does not change the interface language.
+- See the [root README](../../README.md) for contract setup, testing, deployment, security limitations and licensing.
