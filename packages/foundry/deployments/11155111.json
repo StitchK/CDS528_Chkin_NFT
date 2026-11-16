@@ -1,0 +1,44 @@
+{
+  "network": "sepolia",
+  "chainId": 11155111,
+  "deployer": "0x87597B12B1E52f09B04e7c51b0A16f9195CF2DF8",
+  "compiler": "0.8.37",
+  "optimizer": {
+    "enabled": true,
+    "runs": 200
+  },
+  "contracts": {
+    "depositToken": {
+      "address": "0xAeDf8c2A37AceE087204d754DB44896703D8D7F2",
+      "transactionHash": "0x01f54a4dbd664f431c056ba7097763365946b308a1f3518e809046d1e427c4d5",
+      "blockNumber": 12145741
+    },
+    "rewardPool": {
+      "address": "0xC937e3Bae96d86C5E90DF2f14e47a9Fc0420a453",
+      "transactionHash": "0xe283f85adc997e2e8d185d9b487a46ca7582e66c015f4c2dd519f8b9f9417ff8",
+      "blockNumber": 12145742
+    },
+    "checkInNFT": {
+      "address": "0xEcc6d8Ce6A99adFBe2dF576084967b2E0E7F65fB",
+      "transactionHash": "0x947dc708749bb7dd6d5a8d68183304e635a4acbcdb52b18109b4aeb8235c51ab",
+      "blockNumber": 12145780
+    },
+    "challengeManager": {
+      "address": "0xDd265997a497Bc315136a958b6b7724dE0675Ed9",
+      "transactionHash": "0xbcf95b5373a66a674cb58bf75acf6e63c4a1abda55936e4af7d36951dbfc97f0",
+      "blockNumber": 12145799
+    }
+  },
+  "bindings": {
+    "rewardPoolSetChallengeManager": {
+      "transactionHash": "0x01ecbab8f5fed42cbe7aee68af95629b6074621e4d6b97d35fd88f11681384cf",
+      "blockNumber": 12145805
+    },
+    "checkInNFTSetManager": {
+      "transactionHash": "0x72062196180305e530e9c6077c71e31ce21ad31ba230ea23928f091d4c7fa56d",
+      "blockNumber": 12145817
+    }
+  },
+  "explorer": "https://sepolia.etherscan.io",
+  "verifiedOnChain": true
+}

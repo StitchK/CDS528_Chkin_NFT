@@ -1,0 +1,19 @@
+{
+  "name": "CheckIn 快速挑战完成纪念",
+  "description": "完成 CheckIn 链上打卡挑战后铸造的课程项目演示 NFT。",
+  "image": "http://127.0.0.1:4173/assets/rewards/victory-run.jpg",
+  "attributes": [
+    {
+      "trait_type": "Challenge",
+      "value": "Quick Demo"
+    },
+    {
+      "trait_type": "Required Check-ins",
+      "value": 1
+    },
+    {
+      "trait_type": "Network",
+      "value": "Anvil Local"
+    }
+  ]
+}

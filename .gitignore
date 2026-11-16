@@ -1,20 +1,38 @@
 .DS_Store
+**/.DS_Store
+**/out/
+**/cache/
+**/broadcast/
+node_modules/
 
-# Project snapshots belong outside this repository
-/chkin_nft*.zip
+# Local chain state and deployment helpers
+**/anvil-state.json
+**/anvil-state.rpc
+**/deploy-sepolia.html
+**/deploy-artifacts/
 
-# Foundry build artifacts
-packages/foundry/cache/
-packages/foundry/out/
-packages/foundry/broadcast/
+# Presentation, video and generated media are not project source
+*.mp4
+*.mov
+*.ppt
+*.pptx
+*.jpg
+*.jpeg
+*.png
+*.wav
+*.m4a
+*.aiff
+.codex-*/
+deliverables/
+narration*/
+render_*
+verify_*
+mix_demo_audio*
 
-# Local environment files
-.env
-.env.*
-!.env.example
-
-# Editor files
-.idea/
-.vscode/
-*.swp
-
+# Web NFT artwork is part of the application
+!chkin_nft/packages/web/assets/**/*.jpg
+!chkin_nft/packages/web/assets/**/*.jpeg
+!chkin_nft/packages/web/assets/**/*.png
+!packages/web/assets/**/*.jpg
+!packages/web/assets/**/*.jpeg
+!packages/web/assets/**/*.png

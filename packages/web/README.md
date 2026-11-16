@@ -1,47 +1,59 @@
 # CheckIn Web
 
-A frontend for the CheckIn smart contracts, built with native HTML, CSS, JavaScript and ethers v6. No build tools are required.
+无需构建工具的 CheckIn 智能合约前端，使用原生 HTML、CSS、JavaScript 与 ethers v6。
 
-## Run locally
+## 本地启动
 
-Serve the files over HTTP instead of opening `index.html` directly:
+请通过 HTTP 服务访问，不要直接双击 `index.html`：
 
 ```bash
 cd packages/web
-python3 -m http.server 4173
+python3 serve.py
 ```
 
-Open <http://localhost:4173>.
+然后打开 `http://127.0.0.1:4173`。这个启动脚本支持 `/create`、`/dashboard`、`/my-nfts` 和 `/challenges/:id` 的 SPA 路由回退。
 
-## Initial configuration
+## 首次配置
 
-1. Switch the wallet to the network where the contracts are deployed.
-2. Open settings using the button in the upper-right corner.
-3. Enter the deployed `ChallengeManager` address.
-4. Use the contract detection button. The frontend discovers the linked `RewardPool`, `MockDepositToken` and `CheckInNFT` addresses, checks that contract code exists and checks the pool's manager/token bindings. Confirm the NFT manager binding separately during deployment.
-5. Save the configuration. It is stored by chain ID in browser `localStorage`.
+1. 在钱包中切换到 Sepolia（Chain ID `11155111`）或本地 Anvil（Chain ID `31337`）。
+2. 点击右上角设置按钮。
+3. 输入已部署的 `ChallengeManager` 地址。
+4. 点击“检测合约”；页面会自动读取并验证 `RewardPool`、`MockDepositToken` 和 `CheckInNFT`。
+5. 保存配置。配置按 chain ID 保存在浏览器 `localStorage` 中。
 
-## Implemented features
+Sepolia 已内置正式的 `ChallengeManager` 地址：`0xDd265997a497Bc315136a958b6b7724dE0675Ed9`。连接 Sepolia 后页面会自动检测并加载整套合约。
 
-- Wallet connection, network information and CHECK/NFT balances
-- Browsing, searching and filtering on-chain challenges
-- Creating, cancelling and joining challenges
-- Automatic ERC-20 deposit allowance checks and approval requests
-- Daily check-ins and permissionless finalization after expiry
-- Successful participant deposit and reward NFT claims
-- Cancellation refunds
-- Author allocation and winner bonus claims
-- Test CHECK faucet claims
-- Challenge names and descriptions from IPFS/HTTPS metadata
+## Sepolia 部署
 
-## Hosting
+| Contract | Address |
+| --- | --- |
+| CHECK Token | `0xAeDf8c2A37AceE087204d754DB44896703D8D7F2` |
+| RewardPool | `0xC937e3Bae96d86C5E90DF2f14e47a9Fc0420a453` |
+| CheckInNFT | `0xEcc6d8Ce6A99adFBe2dF576084967b2E0E7F65fB` |
+| ChallengeManager | `0xDd265997a497Bc315136a958b6b7724dE0675Ed9` |
 
-All files in this directory are static. Deploy `packages/web` as the site root to GitHub Pages, Cloudflare Pages, Netlify, Vercel or another static server. The hosted page must be able to access `https://cdn.jsdelivr.net` to load ethers v6.
+完整交易哈希和区块号记录在 `../foundry/deployments/11155111.json`。
 
-## Notes
+## 已实现功能
 
-- The test token exposes a public, repeatable `claim()` faucet. Use it only locally or on test networks.
-- Install MetaMask or another EIP-1193-compatible EVM browser wallet.
-- A challenge day is a consecutive 24-hour period measured from the challenge start, not a local calendar day.
-- The current interface displays Chinese labels. This English README describes those controls; it does not change the interface language.
-- See the [root README](../../README.md) for contract setup, testing, deployment, security limitations and licensing.
+- 钱包连接、网络和 CHECK/NFT 余额展示
+- 挑战大厅、挑战详情、创建挑战、我的挑战和 My NFTs 路由
+- 浏览、搜索、筛选、创建和取消链上挑战
+- 在详情页分步完成 ERC-20 授权和加入挑战
+- 使用合约 `canCheckIn()` 判断每日打卡状态，并显示下一次可打卡时间
+- 到期公开结算、领取成功押金和奖励 NFT
+- 领取成功押金和奖励 NFT
+- 领取取消退款
+- 作者收益和成功者额外奖励领取
+- 固定钱包面板与 1,000 CHECK 测试代币水龙头
+- NFT 枚举、IPFS/HTTPS 元数据和图片读取
+
+## 部署
+
+目录内全是静态文件，可部署到 Cloudflare Pages、Netlify、Vercel 或任意静态服务器。部署平台需要配置 SPA fallback，将未知路径重写到 `index.html`。线上页面还需要能够访问 `https://cdn.jsdelivr.net` 以加载 ethers v6。
+
+## 注意事项
+
+- 当前测试代币开放 `claim()`，只应在本地或测试网使用。
+- 浏览器需要安装 MetaMask 或其他支持 EIP-1193 的 EVM 钱包。
+- 合约中的“一天”从挑战开始时间起按连续 24 小时计算，不是本地自然日。
