@@ -40,5 +40,6 @@
     }
   },
   "explorer": "https://sepolia.etherscan.io",
-  "verifiedOnChain": true
+  "bindingsVerifiedOnChain": true,
+  "sourceVerification": "not-recorded"
 }
