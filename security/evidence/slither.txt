@@ -1,0 +1,32 @@
+
+Detector: incorrect-equality
+ChallengeManager.checkIn(uint256) (contracts/ChallengeManager.sol#275-307) uses a dangerous strict equality:
+	- participant.lastCheckInDayPlusOne == dayPlusOne (contracts/ChallengeManager.sol#294)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Detector: timestamp
+ChallengeManager.createChallenge(uint256,uint64,uint32,uint32,uint32,string) (contracts/ChallengeManager.sol#177-224) uses timestamp for comparisons
+	Dangerous comparisons:
+	- startTime <= block.timestamp (contracts/ChallengeManager.sol#186)
+ChallengeManager.joinChallenge(uint256) (contracts/ChallengeManager.sol#229-270) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= challenge.startTime (contracts/ChallengeManager.sol#234)
+ChallengeManager.checkIn(uint256) (contracts/ChallengeManager.sol#275-307) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp < challenge.startTime || block.timestamp >= challenge.endTime (contracts/ChallengeManager.sol#281-282)
+	- participant.lastCheckInDayPlusOne == dayPlusOne (contracts/ChallengeManager.sol#294)
+ChallengeManager.finalizeChallenge(uint256) (contracts/ChallengeManager.sol#314-374) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp < challenge.endTime (contracts/ChallengeManager.sol#321)
+ChallengeManager.cancelChallenge(uint256) (contracts/ChallengeManager.sol#416-433) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= challenge.startTime (contracts/ChallengeManager.sol#427)
+ChallengeManager.canCheckIn(uint256,address) (contracts/ChallengeManager.sol#476-496) uses timestamp for comparisons
+	Dangerous comparisons:
+	- challenge.status != ChallengeStatus.Open || block.timestamp < challenge.startTime || block.timestamp >= challenge.endTime (contracts/ChallengeManager.sol#482-484)
+	- participant.lastCheckInDayPlusOne != dayIndex + 1 (contracts/ChallengeManager.sol#495)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+. analyzed (10 contracts with 102 detectors), 7 result(s) found
+'forge clean' running (wd: [repository]/packages/foundry)
+'forge config --json' running
+'forge build --build-info --deny never --skip ./test/** ./script/** --force' running (wd: [repository]/packages/foundry)

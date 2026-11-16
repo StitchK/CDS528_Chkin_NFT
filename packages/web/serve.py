@@ -1,11 +1,18 @@
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import urlsplit
+import re
+
+WEB_ROOT = Path(__file__).resolve().parent
 
 
 class SpaRequestHandler(SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=str(WEB_ROOT), **kwargs)
+
     def do_GET(self):
-        request_path = self.path.split("?", 1)[0]
-        if request_path != "/" and not Path(f".{request_path}").is_file():
+        request_path = urlsplit(self.path).path.rstrip("/")
+        if request_path in {"/create", "/dashboard", "/my-nfts"} or re.fullmatch(r"/challenges/\d+", request_path):
             self.path = "/index.html"
         super().do_GET()
 

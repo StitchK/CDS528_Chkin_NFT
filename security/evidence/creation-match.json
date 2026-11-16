@@ -1,0 +1,39 @@
+{
+  "depositToken": {
+    "creation_bytecode_match": true,
+    "constructor_args": "0x",
+    "receipt_match": true,
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    }
+  },
+  "rewardPool": {
+    "creation_bytecode_match": true,
+    "constructor_args": "0x000000000000000000000000aedf8c2a37acee087204d754db44896703d8d7f2",
+    "receipt_match": true,
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    }
+  },
+  "checkInNFT": {
+    "creation_bytecode_match": true,
+    "constructor_args": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000",
+    "receipt_match": true,
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "nft_base_uri": ""
+  },
+  "challengeManager": {
+    "creation_bytecode_match": true,
+    "constructor_args": "0x000000000000000000000000aedf8c2a37acee087204d754db44896703d8d7f2000000000000000000000000c937e3bae96d86c5e90df2f14e47a9fc0420a453000000000000000000000000ecc6d8ce6a99adfbe2df576084967b2e0e7f65fb",
+    "receipt_match": true,
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    }
+  }
+}

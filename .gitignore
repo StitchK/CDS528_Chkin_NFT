@@ -36,3 +36,12 @@ mix_demo_audio*
 !packages/web/assets/**/*.jpg
 !packages/web/assets/**/*.jpeg
 !packages/web/assets/**/*.png
+
+# Keep credentials, editor files and project archives out of source control
+.env
+.env.*
+!.env.example
+/chkin_nft*.zip
+.idea/
+.vscode/
+*.swp

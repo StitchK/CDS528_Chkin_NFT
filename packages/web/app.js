@@ -207,7 +207,7 @@ async function fetchMetadata(uri, id) {
     return {
       name: typeof data.name === "string" && data.name.trim() ? data.name.trim().slice(0, 80) : fallback.name,
       description: typeof data.description === "string" ? data.description.trim().slice(0, 300) : "",
-      image: typeof data.image === "string" ? ipfsUrl(data.image) : null,
+      image: typeof data.image === "string" ? ipfsUrl(data.image.startsWith("ipfs://") ? data.image : new URL(data.image, url).href) : null,
       loaded: true,
     };
   } catch {
@@ -434,7 +434,7 @@ async function connectWallet(requestAccess = true) {
 }
 
 async function requireConnection() {
-  if (!state.account) return connectWallet(true);
+  if (!state.account && !(await connectWallet(true))) return false;
   if (!SUPPORTED_CHAIN_IDS.has(state.chainId)) {
     try {
       return await ensureSupportedNetwork();

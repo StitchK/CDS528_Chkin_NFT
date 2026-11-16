@@ -18,7 +18,6 @@ contract Deploy {
 
     event DeploymentCompleted(
         uint256 indexed chainId,
-        address indexed deployer,
         address depositToken,
         address rewardPool,
         address checkInNFT,
@@ -46,9 +45,11 @@ contract Deploy {
         rewardPool.setChallengeManager(address(challengeManager));
         checkInNFT.setManager(address(challengeManager));
 
+        require(rewardPool.challengeManager() == address(challengeManager), "Pool binding failed");
+        require(checkInNFT.manager() == address(challengeManager), "NFT binding failed");
+
         emit DeploymentCompleted(
             block.chainid,
-            msg.sender,
             address(depositToken),
             address(rewardPool),
             address(checkInNFT),
