@@ -42,6 +42,13 @@ button {
   color: inherit;
 }
 
+a { color: inherit; }
+.nav-link,
+.side-link,
+.primary-button,
+.outline-button,
+.card-action { text-decoration: none; }
+
 button:not(:disabled) {
   cursor: pointer;
 }
@@ -114,6 +121,8 @@ button:disabled {
   border: 0;
   background: none;
   position: relative;
+  display: flex;
+  align-items: center;
   color: var(--muted);
   font-size: 14px;
   font-weight: 600;
@@ -661,7 +670,7 @@ button:disabled {
 }
 
 .challenge-card {
-  min-height: 310px;
+  min-height: 350px;
   padding: 24px;
   border-radius: var(--radius);
   background: var(--white);
@@ -710,8 +719,10 @@ button:disabled {
 .progress-label { display: flex; justify-content: space-between; margin-bottom: 7px; color: var(--muted); font-size: 9px; }
 .progress-track { height: 5px; border-radius: 5px; background: var(--paper-deep); overflow: hidden; }
 .progress-track i { display: block; height: 100%; border-radius: inherit; background: var(--violet); }
-.card-action { height: 40px; border: 0; border-radius: 12px; background: var(--ink); color: white; font-size: 11px; font-weight: 700; }
+.card-action { height: 40px; border: 0; border-radius: 12px; background: var(--ink); color: white; font-size: 11px; font-weight: 700; display: grid; place-items: center; }
 .card-action:hover { background: #2b3632; }
+.card-dates { margin: -7px 0 16px; display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 8px; }
+.card-dates i { color: var(--violet); font-style: normal; }
 
 .empty-state {
   min-height: 330px;
@@ -737,6 +748,19 @@ button:disabled {
 .field input { width: 100%; height: 45px; border: 1px solid var(--line); border-radius: 12px; background: #faf9f5; padding: 0 13px; outline: 0; color: var(--ink); font-size: 12px; transition: 0.2s; }
 .field input:focus { border-color: var(--violet); box-shadow: 0 0 0 3px rgba(121, 103, 237, 0.1); background: white; }
 .field small { color: #999e9b; font-size: 9px; }
+.reward-picker { margin: 0; padding: 0; border: 0; }
+.reward-picker legend { margin-bottom: 8px; font-size: 11px; font-weight: 700; }
+.reward-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.reward-option { min-width: 0; padding: 8px; border: 1px solid var(--line); border-radius: 14px; background: #faf9f5; cursor: pointer; transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; }
+.reward-option:hover { border-color: rgba(121, 103, 237, 0.45); background: white; }
+.reward-option:has(input:checked) { border-color: var(--violet); background: white; box-shadow: 0 0 0 3px rgba(121, 103, 237, 0.1); }
+.reward-option:has(input:focus-visible) { outline: 3px solid rgba(121, 103, 237, 0.24); outline-offset: 2px; }
+.reward-option input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.reward-option-art { display: block; aspect-ratio: 1; overflow: hidden; position: relative; border-radius: 9px; background: var(--paper-deep); }
+.reward-option-art img { width: 100%; height: 100%; position: absolute; inset: 0; display: block; object-fit: contain; }
+.reward-option > span:last-child { display: block; padding: 9px 3px 2px; }
+.reward-option strong { display: block; font-size: 10px; }
+.reward-option small { display: block; margin-top: 3px; font-size: 8px; }
 .input-suffix { position: relative; }
 .input-suffix input { padding-right: 67px; }
 .input-suffix span { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--violet); font-size: 9px; font-weight: 800; }
@@ -755,6 +779,13 @@ button:disabled {
 .preview-art::after { content: ""; width: 130px; height: 130px; position: absolute; top: -45px; right: -25px; border: 24px solid rgba(200, 255, 77, 0.9); border-radius: 50%; }
 .preview-art > span { font-size: 55px; line-height: 0.8; font-weight: 500; }
 .preview-art small { position: relative; z-index: 1; text-align: right; font-size: 8px; line-height: 1.3; font-weight: 800; letter-spacing: 1px; }
+.preview-art.reward-preview { height: auto; padding: 0; display: block; background: #2d2a43; }
+.preview-art.reward-preview::after { display: none; }
+.reward-preview img { position: static; width: 100%; height: auto; display: block; object-fit: contain; }
+.reward-preview::before { content: ""; position: absolute; inset: 42% 0 0; z-index: 1; background: linear-gradient(transparent, rgba(16, 20, 18, 0.82)); }
+.reward-preview > span, .reward-preview small { position: absolute; bottom: 18px; z-index: 2; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45); }
+.reward-preview > span { left: 18px; }
+.reward-preview small { right: 18px; }
 .preview-card h3 { font-size: 20px; margin: 0 0 8px; }
 .preview-card > p { color: rgba(255, 255, 255, 0.55); font-size: 10px; line-height: 1.6; }
 .preview-card dl { margin: 25px 0 0; border-top: 1px solid rgba(255, 255, 255, 0.1); }
@@ -830,8 +861,18 @@ footer > span { color: rgba(255, 255, 255, 0.28); font-size: 8px; letter-spacing
 .auto-addresses code { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .modal-actions { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 22px; }
 
-.detail-modal { width: min(720px, calc(100vw - 28px)); }
-.detail-card { max-height: calc(100vh - 40px); overflow-y: auto; }
+.detail-page { min-height: 560px; }
+.detail-page-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
+.detail-page-head > a { color: var(--muted); font-size: 11px; font-weight: 700; text-decoration: none; }
+.detail-page-head > a:hover { color: var(--ink); }
+.detail-title { display: flex; justify-content: space-between; gap: 40px; align-items: flex-end; margin-bottom: 25px; }
+.detail-title > div:first-child { max-width: 680px; }
+.detail-title > div:first-child > span { color: var(--violet); font-size: 9px; font-weight: 800; letter-spacing: 1.5px; }
+.detail-title h2 { margin: 9px 0 10px; font-family: var(--display); font-size: clamp(34px, 5vw, 58px); line-height: 1.06; letter-spacing: -2.6px; }
+.detail-title p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+.detail-author { min-width: 210px; padding: 15px; border-left: 1px solid var(--line); display: flex; flex-direction: column; gap: 7px; }
+.detail-author span { color: var(--muted); font-size: 9px; }
+.detail-author strong { font-size: 11px; font-family: monospace; }
 .detail-banner { margin: 22px 0; padding: 22px; border-radius: 18px; background: var(--ink); color: white; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
 .detail-banner > div { display: flex; flex-direction: column; gap: 7px; }
 .detail-banner span { color: rgba(255, 255, 255, 0.45); font-size: 9px; }
@@ -840,10 +881,64 @@ footer > span { color: rgba(255, 255, 255, 0.28); font-size: 8px; letter-spacing
 .detail-data { padding: 14px; border-radius: 13px; background: var(--paper); display: flex; flex-direction: column; gap: 6px; }
 .detail-data span { color: var(--muted); font-size: 9px; }
 .detail-data strong { font-size: 11px; word-break: break-word; }
-.detail-progress { margin: 20px 0; }
+.detail-data small { color: var(--muted); font-size: 8px; }
+.detail-progress { margin: 24px 0; padding: 20px; border-radius: 16px; background: var(--white); }
+.detail-progress small { display: block; margin-top: 10px; color: var(--muted); font-size: 9px; }
 .detail-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
 .detail-actions button { flex: 1 1 150px; }
 .detail-uri { margin: 14px 0 0; padding: 12px; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); font-size: 9px; word-break: break-all; }
+
+.join-flow { width: 100%; display: grid; gap: 10px; }
+.join-step { padding: 15px; border: 1px solid var(--line); border-radius: 15px; background: var(--white); display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 13px; }
+.join-step > span { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 10px; background: var(--paper-deep); font-size: 11px; font-weight: 800; }
+.join-step.complete > span { background: #e5f5ca; color: #52720c; }
+.join-step > div { display: flex; flex-direction: column; gap: 4px; }
+.join-step strong { font-size: 12px; }
+.join-step small { color: var(--muted); font-size: 9px; }
+.join-step button { min-width: 118px; }
+.faucet-inline { min-height: 42px; border: 1px dashed var(--violet); border-radius: 13px; background: var(--violet-soft); color: #5143b7; font-size: 11px; font-weight: 800; }
+.danger-border { color: #a1463b; border-color: rgba(161, 70, 59, 0.35); }
+
+.dashboard-tabs { margin-bottom: 24px; padding: 5px; border-radius: 14px; background: var(--paper-deep); display: inline-flex; gap: 4px; }
+.dashboard-tabs button { min-height: 38px; padding: 0 15px; border: 0; border-radius: 10px; background: transparent; color: var(--muted); font-size: 10px; font-weight: 700; }
+.dashboard-tabs button.active { background: var(--white); color: var(--ink); box-shadow: 0 5px 16px rgba(23, 32, 29, 0.08); }
+.dashboard-tabs span { min-width: 19px; height: 19px; margin-left: 5px; padding: 0 5px; display: inline-grid; place-items: center; border-radius: 7px; background: var(--violet-soft); color: var(--violet); }
+.dashboard-panel { display: none; }
+.dashboard-panel.active { display: block; animation: view-in 0.3s ease; }
+
+.nft-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.nft-card { border: 1px solid rgba(23, 32, 29, 0.08); border-radius: 22px; background: var(--white); overflow: hidden; transition: 0.25s ease; }
+.nft-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.nft-art { aspect-ratio: 1; margin: 10px; border-radius: 17px; overflow: hidden; position: relative; background: var(--paper-deep); }
+.nft-art img { width: 100%; height: 100%; object-fit: contain !important; object-position: center; display: block; }
+.nft-art > b { position: absolute; top: 12px; right: 12px; padding: 6px 8px; border-radius: 9px; background: rgba(23, 32, 29, 0.78); color: white; font-size: 9px; }
+.nft-placeholder { width: 100%; height: 100%; padding: 22px; color: white; display: flex; align-items: flex-end; justify-content: space-between; position: relative; overflow: hidden; }
+.nft-placeholder::after { content: ""; width: 85%; height: 85%; position: absolute; top: -32%; right: -38%; border: 30px solid var(--lime); border-radius: 50%; }
+.nft-placeholder span { font-size: 58px; line-height: 0.8; font-weight: 600; }
+.nft-placeholder small { text-align: right; font-size: 8px; font-weight: 800; letter-spacing: 1px; }
+.nft-copy { padding: 10px 20px 22px; }
+.nft-copy > span { color: var(--violet); font-size: 8px; font-weight: 800; letter-spacing: 1px; }
+.nft-copy h3 { margin: 7px 0; font-size: 17px; }
+.nft-copy p { margin: 0 0 12px; color: var(--muted); font-size: 10px; }
+.nft-copy small { font-size: 8px; }
+.nft-copy small.loaded { color: var(--success); }
+.nft-copy small.failed { color: #a16c26; }
+
+.wallet-dock { width: 100%; margin-top: 28px; padding: 16px; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 19px; background: rgba(23, 32, 29, 0.96); color: white; box-shadow: 0 16px 38px rgba(10, 15, 13, 0.18); }
+.wallet-dock-head { display: flex; align-items: center; justify-content: space-between; }
+.wallet-dock-head > span { display: flex; align-items: center; gap: 7px; color: rgba(255, 255, 255, 0.55); font-size: 8px; font-weight: 800; letter-spacing: 1.4px; }
+.wallet-dock-head i { width: 7px; height: 7px; border-radius: 50%; background: #717a76; }
+.wallet-dock-head i.online { background: var(--lime); box-shadow: 0 0 0 3px rgba(200, 255, 77, 0.12); }
+.wallet-dock-head button { width: 27px; height: 27px; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; background: rgba(255, 255, 255, 0.06); color: white; font-size: 11px; }
+.wallet-dock > strong { display: block; margin: 10px 0 4px; font-size: 11px; font-family: monospace; }
+.wallet-dock > span { color: rgba(255, 255, 255, 0.47); font-size: 9px; }
+.wallet-dock > div:last-of-type { margin-top: 13px; display: grid; grid-template-columns: 1fr; gap: 9px; }
+.wallet-dock b { font-size: 16px; }
+.wallet-dock #claimTestTokenButton { min-height: 36px; border: 0; border-radius: 11px; background: var(--lime); color: var(--ink); font-size: 9px; font-weight: 800; }
+.wallet-dock > p { margin: 10px 0 0; color: #ffb7a6; font-size: 8px; line-height: 1.4; }
+
+body:not(.route-home) .route-home-only { display: none !important; }
+body:not(.route-home) .workspace { padding-top: 58px; }
 
 .transaction-overlay { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: rgba(17, 23, 21, 0.55); backdrop-filter: blur(5px); }
 .transaction-overlay[hidden] { display: none; }
@@ -873,6 +968,8 @@ footer > span { color: rgba(255, 255, 255, 0.28); font-size: 8px; letter-spacing
   .sidebar-label, .wallet-card { display: none; }
   .side-link { justify-content: center; padding: 0 8px; }
   .side-count { display: none; }
+  .wallet-dock { grid-column: 1 / -1; width: min(100%, 520px); margin: 14px 0 0; justify-self: start; }
+  .nft-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 760px) {
@@ -898,9 +995,12 @@ footer > span { color: rgba(255, 255, 255, 0.28); font-size: 8px; letter-spacing
   .search-box { flex: 1; }
   .filter-row { overflow-x: auto; padding-bottom: 4px; }
   .challenge-grid { grid-template-columns: 1fr; }
+  .nft-grid { grid-template-columns: 1fr; }
   .create-layout { grid-template-columns: 1fr; }
   .form-panel { padding: 20px; grid-template-columns: 1fr; }
   .field, .field.full, .form-note, .submit-button { grid-column: 1; }
+  .reward-options { grid-template-columns: 1fr; }
+  .reward-option { display: grid; grid-template-columns: 92px 1fr; align-items: center; }
   .preview-card { position: static; }
   .reward-summary { align-items: flex-start; flex-direction: column; gap: 28px; }
   .reward-item { grid-template-columns: 40px 1fr auto; }
@@ -913,6 +1013,13 @@ footer > span { color: rgba(255, 255, 255, 0.28); font-size: 8px; letter-spacing
   footer { padding: 35px 22px; align-items: flex-start; flex-direction: column; }
   .detail-banner { grid-template-columns: 1fr; }
   .detail-grid { grid-template-columns: 1fr; }
+  .detail-title { align-items: flex-start; flex-direction: column; gap: 20px; }
+  .detail-author { width: 100%; border-left: 0; border-top: 1px solid var(--line); }
+  .join-step { grid-template-columns: 30px 1fr; }
+  .join-step button { grid-column: 1 / -1; width: 100%; }
+  .dashboard-tabs { width: 100%; overflow-x: auto; }
+  .dashboard-tabs button { flex: 1 0 auto; }
+  .wallet-dock { width: 100%; margin-top: 10px; padding: 14px; }
   .modal-card { padding: 22px; }
   .modal-actions { flex-wrap: wrap; }
   .text-button.danger { width: 100%; text-align: left; }

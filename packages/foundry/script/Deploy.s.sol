@@ -6,35 +6,56 @@ import {RewardPool} from "../contracts/RewardPool.sol";
 import {CheckInNFT} from "../contracts/CheckInNFT.sol";
 import {ChallengeManager} from "../contracts/ChallengeManager.sol";
 
-interface VmDeploy {
+interface Vm {
+    function envOr(string calldata name, string calldata defaultValue) external returns (string memory value);
+
     function startBroadcast() external;
     function stopBroadcast() external;
 }
 
-/// @notice Deploys all four contracts and binds their manager permissions.
-/// @dev The CLI sender owns RewardPool and CheckInNFT; no private key is read here.
 contract Deploy {
-    VmDeploy private constant VM = VmDeploy(address(uint160(uint256(keccak256("hevm cheat code")))));
+    Vm private constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
 
-    function run(string calldata baseURI)
+    event DeploymentCompleted(
+        uint256 indexed chainId,
+        address depositToken,
+        address rewardPool,
+        address checkInNFT,
+        address challengeManager
+    );
+
+    function run()
         external
-        returns (address tokenAddress, address poolAddress, address nftAddress, address managerAddress)
+        returns (
+            MockDepositToken depositToken,
+            RewardPool rewardPool,
+            CheckInNFT checkInNFT,
+            ChallengeManager challengeManager
+        )
     {
-        VM.startBroadcast();
+        string memory nftBaseURI = vm.envOr("NFT_BASE_URI", string(""));
 
-        MockDepositToken token = new MockDepositToken();
-        RewardPool pool = new RewardPool(address(token));
-        CheckInNFT nft = new CheckInNFT(baseURI);
-        ChallengeManager manager = new ChallengeManager(address(token), address(pool), address(nft));
+        vm.startBroadcast();
 
-        pool.setChallengeManager(address(manager));
-        nft.setManager(address(manager));
+        depositToken = new MockDepositToken();
+        rewardPool = new RewardPool(address(depositToken));
+        checkInNFT = new CheckInNFT(nftBaseURI);
+        challengeManager = new ChallengeManager(address(depositToken), address(rewardPool), address(checkInNFT));
 
-        VM.stopBroadcast();
+        rewardPool.setChallengeManager(address(challengeManager));
+        checkInNFT.setManager(address(challengeManager));
 
-        require(pool.challengeManager() == address(manager), "pool binding failed");
-        require(nft.manager() == address(manager), "NFT binding failed");
+        require(rewardPool.challengeManager() == address(challengeManager), "Pool binding failed");
+        require(checkInNFT.manager() == address(challengeManager), "NFT binding failed");
 
-        return (address(token), address(pool), address(nft), address(manager));
+        emit DeploymentCompleted(
+            block.chainid,
+            address(depositToken),
+            address(rewardPool),
+            address(checkInNFT),
+            address(challengeManager)
+        );
+
+        vm.stopBroadcast();
     }
 }

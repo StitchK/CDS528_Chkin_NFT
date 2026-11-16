@@ -1,0 +1,71 @@
+{
+  "chainId": 11155111,
+  "checkedOn": "2026-11-16",
+  "contracts": {
+    "depositToken": {
+      "address": "0xAeDf8c2A37AceE087204d754DB44896703D8D7F2",
+      "codeBytes": 3386,
+      "reads": {
+        "symbol()": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000005434845434b000000000000000000000000000000000000000000000000000000",
+        "decimals()": "0x0000000000000000000000000000000000000000000000000000000000000012"
+      },
+      "transactionHash": "0x01f54a4dbd664f431c056ba7097763365946b308a1f3518e809046d1e427c4d5",
+      "status": "0x1",
+      "blockNumber": 12145741,
+      "gasUsed": 5441576
+    },
+    "rewardPool": {
+      "address": "0xC937e3Bae96d86C5E90DF2f14e47a9Fc0420a453",
+      "codeBytes": 7434,
+      "reads": {
+        "token()": "0x000000000000000000000000aedf8c2a37acee087204d754db44896703d8d7f2",
+        "challengeManager()": "0x000000000000000000000000dd265997a497bc315136a958b6b7724de0675ed9",
+        "owner()": "0x00000000000000000000000087597b12b1e52f09b04e7c51b0a16f9195cf2df8"
+      },
+      "transactionHash": "0xe283f85adc997e2e8d185d9b487a46ca7582e66c015f4c2dd519f8b9f9417ff8",
+      "status": "0x1",
+      "blockNumber": 12145742,
+      "gasUsed": 11815924
+    },
+    "checkInNFT": {
+      "address": "0xEcc6d8Ce6A99adFBe2dF576084967b2E0E7F65fB",
+      "codeBytes": 6100,
+      "reads": {
+        "manager()": "0x000000000000000000000000dd265997a497bc315136a958b6b7724de0675ed9",
+        "owner()": "0x00000000000000000000000087597b12b1e52f09b04e7c51b0a16f9195cf2df8"
+      },
+      "transactionHash": "0x947dc708749bb7dd6d5a8d68183304e635a4acbcdb52b18109b4aeb8235c51ab",
+      "status": "0x1",
+      "blockNumber": 12145780,
+      "gasUsed": 9873757
+    },
+    "challengeManager": {
+      "address": "0xDd265997a497Bc315136a958b6b7724dE0675Ed9",
+      "codeBytes": 9502,
+      "reads": {
+        "depositToken()": "0x000000000000000000000000aedf8c2a37acee087204d754db44896703d8d7f2",
+        "rewardPool()": "0x000000000000000000000000c937e3bae96d86c5e90df2f14e47a9fc0420a453",
+        "rewardNft()": "0x000000000000000000000000ecc6d8ce6a99adfbe2df576084967b2e0e7f65fb",
+        "challengeCount()": "0x0000000000000000000000000000000000000000000000000000000000000001"
+      },
+      "transactionHash": "0xbcf95b5373a66a674cb58bf75acf6e63c4a1abda55936e4af7d36951dbfc97f0",
+      "status": "0x1",
+      "blockNumber": 12145799,
+      "gasUsed": 15140443
+    }
+  },
+  "bindings": {
+    "rewardPoolSetChallengeManager": {
+      "transactionHash": "0x01ecbab8f5fed42cbe7aee68af95629b6074621e4d6b97d35fd88f11681384cf",
+      "status": "0x1",
+      "gasUsed": "0x1fe77",
+      "blockNumber": "0xb9548d"
+    },
+    "checkInNFTSetManager": {
+      "transactionHash": "0x72062196180305e530e9c6077c71e31ce21ad31ba230ea23928f091d4c7fa56d",
+      "status": "0x1",
+      "gasUsed": "0x7401",
+      "blockNumber": "0xb95499"
+    }
+  }
+}

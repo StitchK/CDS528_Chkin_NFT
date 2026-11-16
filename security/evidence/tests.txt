@@ -1,0 +1,57 @@
+Compiling 19 files with Solc 0.8.37
+Solc 0.8.37 finished in 561.06ms
+Compiler run successful!
+
+Ran 15 tests for test/ChallengeManager.t.sol:ChallengeManagerTest
+[PASS] testAllWinnersCreateZeroDepositRewardPoolSettlement() (gas: 1435908)
+[PASS] testAuthorCanParticipateAndWin() (gas: 848719)
+[PASS] testCancelBeforeStartRefundsParticipantsOnce() (gas: 523656)
+[PASS] testCancellationRequiresAuthorAndMustPrecedeStart() (gas: 214173)
+[PASS] testCannotJoinTwiceOrAfterStart() (gas: 245716)
+[PASS] testCheckInRequiresParticipantAndActiveWindow() (gas: 212078)
+[PASS] testCreateChallengeRejectsInvalidParameters() (gas: 171659)
+[PASS] testCreateChallengeStoresConfiguration() (gas: 37538)
+[PASS] testFinalizeCannotBeRepeated() (gas: 472026)
+[PASS] testFinalizeSplitsWinnersAndTransfersFailedDeposit() (gas: 1964566)
+[PASS] testJoinTransfersDepositAndRecordsParticipant() (gas: 234029)
+[PASS] testNoWinnerSendsAllDepositsToRewardPool() (gas: 685055)
+[PASS] testOneCheckInPerChallengeDay() (gas: 369702)
+[PASS] testParticipantLimitIsEnforced() (gas: 489343)
+[PASS] testSuccessfulClaimCannotBeRepeated() (gas: 859522)
+Suite result: ok. 15 passed; 0 failed; 0 skipped; finished in 5.71ms (2.31ms CPU time)
+
+Ran 3 tests for test/MockDepositToken.t.sol:MockDepositTokenTest
+[PASS] testClaimMintsFixedAmount() (gas: 85517)
+[PASS] testInfiniteAllowanceIsNotReduced() (gas: 181384)
+[PASS] testTransferMovesTokens() (gas: 134573)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 5.78ms (3.92ms CPU time)
+
+Ran 5 tests for test/CheckInNFT.t.sol:CheckInNFTTest
+[PASS] testBaseURIAppendsTokenId() (gas: 228989)
+[PASS] testMintRecordsChallengeAndMetadata() (gas: 320807)
+[PASS] testOnlyManagerCanMint() (gas: 205082)
+[PASS] testParticipantCannotReceiveTwoRewardsForSameChallenge() (gas: 249760)
+[PASS] testTransferUpdatesOwnershipAndEnumeration() (gas: 375189)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 5.78ms (2.08ms CPU time)
+
+Ran 16 tests for test/RewardPool.t.sol:RewardPoolTest
+[PASS] test_AuthorCanAlsoBeWinner() (gas: 666645)
+[PASS] test_CannotClaimBeforeSettlement() (gas: 77618)
+[PASS] test_ChallengeCannotBeSettledTwice() (gas: 513668)
+[PASS] test_ChallengeManagerCanOnlyBeSetOnce() (gas: 83672)
+[PASS] test_DuplicateWinnerIsRejected() (gas: 203465)
+[PASS] test_EqualSplitAmongWinners() (gas: 1027846)
+[PASS] test_FiftyFiftySplit() (gas: 698226)
+[PASS] test_NoWinnersAllToAuthor() (gas: 490580)
+[PASS] test_OnlyChallengeManagerCanSettle() (gas: 57345)
+[PASS] test_OnlyEligibleUsersCanClaim() (gas: 542304)
+[PASS] test_OnlyOwnerCanSetChallengeManager() (gas: 307757)
+[PASS] test_RemainderGoesToAuthor() (gas: 1027673)
+[PASS] test_RewardsCannotBeClaimedTwice() (gas: 729980)
+[PASS] test_SettlementWithInsufficientBalanceReverts() (gas: 382122)
+[PASS] test_WorksWithProjectMockDepositToken() (gas: 944852)
+[PASS] test_ZeroAmountSettlementHasNoClaimableReward() (gas: 346278)
+Suite result: ok. 16 passed; 0 failed; 0 skipped; finished in 5.79ms (4.53ms CPU time)
+
+Ran 4 test suites in 10.46ms (23.07ms CPU time): 39 tests passed, 0 failed, 0 skipped (39 total tests)
+2026-11-16T12:16:32.584134Z  WARN evm::traces: failed to flush signature cache err=failed to create file "[Foundry directory]/cache/signatures": Operation not permitted (os error 1)

@@ -78,15 +78,15 @@ The required OpenZeppelin sources are included in `lib/`; do not run `forge inst
 Run these commands from `packages/foundry`:
 
 ```bash
-forge build
-forge test
-forge test -vvv
+forge build --optimize --optimizer-runs 200
+forge test --optimize --optimizer-runs 200
+forge test --optimize --optimizer-runs 200 -vvv
 ```
 
 Optional gas report:
 
 ```bash
-forge test --gas-report
+forge test --optimize --optimizer-runs 200 --gas-report
 ```
 
 On 14 November 2026, using Foundry 1.8.5 and Solidity 0.8.37: **4 test suites, 39 passed, 0 failed, 0 skipped**.
@@ -100,7 +100,7 @@ The deployment script was also checked on a temporary Anvil chain on the same da
 | CheckInNFTTest | 5 | Minting authority, unique rewards, metadata, transfers and enumeration |
 | MockDepositTokenTest | 3 | Faucet claims, transfers and infinite allowances |
 
-Passing tests do not establish the absence of vulnerabilities. `forge build` still reports lint diagnostics concerning timestamps, casts, reentrancy/events and rounding that require review in context. This repository does not provide a completed Slither scan or a professional audit conclusion.
+Passing tests do not establish the absence of vulnerabilities. `forge build` still reports lint diagnostics concerning timestamps, casts, reentrancy/events and rounding that require review in context. Slither 0.11.6 was run on 16 November 2026: 7 findings (one medium strict-equality warning and six low timestamp warnings), with no high findings. These concern the duplicate-day guard and challenge timing rules; see security/review-2026-11-16.md for triage. This is not a professional audit.
 
 ## 3. Local deployment
 
@@ -117,13 +117,12 @@ export LOCAL_RPC_URL=http://127.0.0.1:8545
 export LOCAL_DEPLOYER=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 export NFT_BASE_URI=https://example.com/checkin/
 
-forge script script/Deploy.s.sol:Deploy \
-  --sig 'run(string)' "$NFT_BASE_URI" \
+forge script script/Deploy.s.sol:Deploy --optimize --optimizer-runs 200 \
   --rpc-url "$LOCAL_RPC_URL" \
   --sender "$LOCAL_DEPLOYER" --unlocked --broadcast
 ```
 
-The `example.com` URI is a placeholder without actual NFT metadata. Replace it with your hosted metadata base URL for a metadata demonstration. The script deploys Token → RewardPool → NFT → ChallengeManager, then calls `setChallengeManager` and `setManager` from the deployment account. The four return values are `tokenAddress`, `poolAddress`, `nftAddress` and `managerAddress`, in that order.
+The `example.com` URI is a placeholder without actual NFT metadata. Replace it with your hosted metadata base URL for a metadata demonstration. The script deploys Token → RewardPool → NFT → ChallengeManager, then calls `setChallengeManager` and `setManager` from the deployment account. The script reads `NFT_BASE_URI` from the environment and returns `depositToken`, `rewardPool`, `checkInNFT` and `challengeManager`, in that order. Its entry point is now `run()`; omit the old `--sig run(string)` argument.
 
 Transaction records are saved to `broadcast/Deploy.s.sol/31337/run-latest.json`; this generated directory is ignored by Git. Every script run deploys a new set of contracts. Restarting Anvil without persistence clears its state, so redeploy and update the frontend configuration. Use `--unlocked` only with local Anvil.
 
@@ -156,13 +155,11 @@ cast balance "$DEPLOYER_ADDRESS" --rpc-url "$SEPOLIA_RPC_URL"
 Simulate first, then broadcast. `DEPLOYER_ADDRESS` must match the public address of the `checkin-deployer` keystore:
 
 ```bash
-forge script script/Deploy.s.sol:Deploy \
-  --sig 'run(string)' "$NFT_BASE_URI" \
+forge script script/Deploy.s.sol:Deploy --optimize --optimizer-runs 200 \
   --rpc-url "$SEPOLIA_RPC_URL" \
   --sender "$DEPLOYER_ADDRESS" --account checkin-deployer
 
-forge script script/Deploy.s.sol:Deploy \
-  --sig 'run(string)' "$NFT_BASE_URI" \
+forge script script/Deploy.s.sol:Deploy --optimize --optimizer-runs 200 \
   --rpc-url "$SEPOLIA_RPC_URL" \
   --sender "$DEPLOYER_ADDRESS" --account checkin-deployer \
   --broadcast --verify
@@ -186,47 +183,50 @@ cast call "$MANAGER_ADDRESS" 'depositToken()(address)' --rpc-url "$SEPOLIA_RPC_U
 The first two calls should return `MANAGER_ADDRESS`; the third should return `TOKEN_ADDRESS`. Replace all `0xYour...` placeholders before running these commands. To verify the four existing contracts individually:
 
 ```bash
-forge verify-contract "$TOKEN_ADDRESS" contracts/MockDepositToken.sol:MockDepositToken \
+FOUNDRY_OPTIMIZER=false forge verify-contract "$TOKEN_ADDRESS" contracts/MockDepositToken.sol:MockDepositToken \
   --chain sepolia --watch
 
-forge verify-contract "$POOL_ADDRESS" contracts/RewardPool.sol:RewardPool \
+FOUNDRY_OPTIMIZER=false forge verify-contract "$POOL_ADDRESS" contracts/RewardPool.sol:RewardPool \
   --constructor-args "$(cast abi-encode 'constructor(address)' "$TOKEN_ADDRESS")" \
   --chain sepolia --watch
 
 forge verify-contract "$NFT_ADDRESS" contracts/CheckInNFT.sol:CheckInNFT \
   --constructor-args "$(cast abi-encode 'constructor(string)' "$NFT_BASE_URI")" \
-  --chain sepolia --watch
+  --chain sepolia --watch --num-of-optimizations 200
 
 forge verify-contract "$MANAGER_ADDRESS" contracts/ChallengeManager.sol:ChallengeManager \
   --constructor-args "$(cast abi-encode 'constructor(address,address,address)' "$TOKEN_ADDRESS" "$POOL_ADDRESS" "$NFT_ADDRESS")" \
-  --chain sepolia --watch
+  --chain sepolia --watch --num-of-optimizations 200
 ```
 
 Retain the original compiler settings and NFT constructor argument to prevent verification mismatches. After deployment, record all four actual addresses, deployment transactions and `https://sepolia.etherscan.io/address/<actual-address>#code` links in the table below. Use the same records in the report.
 
 | Network | Contract | Address and source verification link |
 | --- | --- | --- |
-| Sepolia (11155111) | MockDepositToken | Public testnet deployment not yet recorded |
-| Sepolia (11155111) | RewardPool | Public testnet deployment not yet recorded |
-| Sepolia (11155111) | CheckInNFT | Public testnet deployment not yet recorded |
-| Sepolia (11155111) | ChallengeManager | Public testnet deployment not yet recorded |
+| Sepolia (11155111) | MockDepositToken | [`0xAeDf8c2A37AceE087204d754DB44896703D8D7F2`](https://sepolia.etherscan.io/address/0xAeDf8c2A37AceE087204d754DB44896703D8D7F2#code); Sourcify exact match |
+| Sepolia (11155111) | RewardPool | [`0xC937e3Bae96d86C5E90DF2f14e47a9Fc0420a453`](https://sepolia.etherscan.io/address/0xC937e3Bae96d86C5E90DF2f14e47a9Fc0420a453#code); Sourcify exact match |
+| Sepolia (11155111) | CheckInNFT | [`0xEcc6d8Ce6A99adFBe2dF576084967b2E0E7F65fB`](https://sepolia.etherscan.io/address/0xEcc6d8Ce6A99adFBe2dF576084967b2E0E7F65fB#code); Sourcify exact match |
+| Sepolia (11155111) | ChallengeManager | [`0xDd265997a497Bc315136a958b6b7724dE0675Ed9`](https://sepolia.etherscan.io/address/0xDd265997a497Bc315136a958b6b7724dE0675Ed9#code); Sourcify exact match |
 
-These instructions provide a reproducible deployment procedure; they do not claim that public testnet deployment or source verification has been completed.
+All four contracts are deployed on Sepolia. Six transaction receipts and the cross-contract bindings were independently checked on 16 November 2026. Deployment hashes and block numbers are recorded in [deployments/11155111.json](packages/foundry/deployments/11155111.json). All four sources are now verified with exact creation and runtime matches on Sourcify; use the source links below. Etherscan source verification is pending because Sourcify’s forwarding service hit its daily submission limit. An Etherscan address link alone is not proof of Etherscan verification. The existing deployment uses Solidity 0.8.37 with mixed settings: CHECK and RewardPool have optimization disabled; NFT and ChallengeManager have optimization enabled for 200 runs. The deployment record stores settings per contract. New deployments use optimization for all four by default. The existing NFT constructor base URI is an empty string.
+
+Sourcify verified sources: [CHECK](https://repo.sourcify.dev/contracts/full_match/11155111/0xAeDf8c2A37AceE087204d754DB44896703D8D7F2/) · [RewardPool](https://repo.sourcify.dev/contracts/full_match/11155111/0xC937e3Bae96d86C5E90DF2f14e47a9Fc0420a453/) · [CheckInNFT](https://repo.sourcify.dev/contracts/full_match/11155111/0xEcc6d8Ce6A99adFBe2dF576084967b2E0E7F65fB/) · [ChallengeManager](https://repo.sourcify.dev/contracts/full_match/11155111/0xDd265997a497Bc315136a958b6b7724dE0675Ed9/)
 
 ## 5. Run and use the frontend
 
 From the repository root, run:
 
 ```bash
-python3 -m http.server 4173 --bind 127.0.0.1 --directory packages/web
+cd packages/web
+python3 serve.py
 ```
 
-Open <http://localhost:4173>. Do not open `file://.../index.html` directly.
+Open <http://127.0.0.1:4173>. The server supports direct SPA routes such as `/create`, `/dashboard`, `/my-nfts` and `/challenges/1`. Do not open `file://.../index.html` directly.
 
 1. Switch the wallet to the deployment network. Sepolia uses chain ID `11155111`; local Anvil uses `31337` with RPC URL `http://127.0.0.1:8545`.
 2. For local demonstrations, import an Anvil development account into a dedicated test wallet. Its default private keys are public and must be used only for local testing.
-3. Connect the wallet, open settings and enter the deployed `managerAddress`. Detect the contracts and save. The frontend discovers the linked addresses and stores configuration by chain ID in browser localStorage.
-4. Claim test CHECK, create a challenge with a future start, or join an existing challenge before it starts. The frontend checks and requests ERC-20 approval when joining.
+3. Connect the wallet. Sepolia automatically loads the deployed ChallengeManager shown above. For other instances, open settings, enter the manager address, detect and save. Discovery checks contract code, the pool token and both manager bindings. Configuration is stored by chain ID in browser localStorage.
+4. Claim test CHECK, create a challenge with a future start, or join an existing challenge before it starts. The detail page separates ERC-20 approval and joining into two transactions.
 5. Check in during the challenge. After expiry, finalize and separately claim the deposit/NFT, winner bonus or author allocation. For cancelled challenges, use the cancellation refund flow.
 
 A challenge's `metadataURI` should point to publicly accessible HTTPS/IPFS JSON. It can include `name`, `description` and `image`; an HTTPS service must allow browser cross-origin requests. Replace the example URLs with actual resources:
@@ -239,7 +239,7 @@ A challenge's `metadataURI` should point to publicly accessible HTTPS/IPFS JSON.
 }
 ```
 
-Publish `packages/web` as the site root on a static hosting service; the repository root is not the web entry point. See [packages/web/README.md](packages/web/README.md) for frontend details.
+Publish `packages/web` as the site root and configure SPA fallback to `index.html`. Bundled reward metadata uses relative image paths resolved against its JSON URL. When previewed locally, generated metadata URIs still point to localhost and are not publicly available: host the assets over HTTPS or IPFS before creating a publicly viewable NFT. Existing on-chain URIs cannot be rewritten by changing these files. See [packages/web/README.md](packages/web/README.md) for frontend details.
 
 ## Security, permissions and limitations
 

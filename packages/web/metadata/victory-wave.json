@@ -1,0 +1,19 @@
+{
+  "name": "CheckIn Reward · 胜利招手",
+  "description": "完成 CheckIn 链上打卡挑战后获得的胜利纪念 NFT。",
+  "image": "../assets/rewards/victory-wave.jpg",
+  "attributes": [
+    {
+      "trait_type": "Reward Type",
+      "value": "Challenge Winner"
+    },
+    {
+      "trait_type": "Victory Art",
+      "value": "Wave"
+    },
+    {
+      "trait_type": "Collection",
+      "value": "CheckIn Reward"
+    }
+  ]
+}
